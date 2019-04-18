@@ -8,10 +8,18 @@
 
 <h1>Main task</h1>
 
-<canvas id="stimuli_canvas" width="400" height="600" style="border:1px solid #000000;">
-</canvas>
+<!-- <canvas id="stimuli_canvas" width="400" height="600" style="border:1px solid #000000;"> -->
+<!-- </canvas> -->
+<!-- <div id="drawing"></div> -->
+<h2 id="trial_counter"></h2>
+<h3>Do you like this circle?</h3>
 
-<div id="drawing"></div>
+<svg width="300" height="200">
+  <circle cx="150" cy="100" r="40" stroke="black" stroke-width="2" fill="white" id="drawing"/>
+</svg>
+
+<button id="task_l_btn" class="response_btns">No</button>
+<button id="task_r_btn" class="response_btns">Yes</button>
 
 {% endblock %}
 
