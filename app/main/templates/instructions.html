@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block custom_css %}
+<link rel="stylesheet" href="{{ url_for('main.static', filename='css/task.css') }}"/>
+{% endblock %}
+
+{% block content %}
+
+<h1>Instructions</h1>
+
+<div id="ins1">
+<p>Page 1 text blah blah blah</p>
+<button id="ins1btn">Continue</button>
+</div>
+
+<div id="ins2" style="displey:none">
+<p>Page 2 text blah blah blah</p>
+<button id="ins2btn">Continue</button>
+</div>
+
+{% endblock %}
+
+
+{% block custom_js %}
+<script src="{{ url_for('main.static', filename='js/instructions.js') }}" type="text/javascript"> </script>
+{% endblock %}

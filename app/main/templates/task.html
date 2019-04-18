@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block custom_css %}
+<link rel="stylesheet" href="{{ url_for('main.static', filename='css/task.css') }}"/>
+{% endblock %}
+
+{% block content %}
+
+<h1>Main task</h1>
+
+<canvas id="stimuli_canvas" width="400" height="600" style="border:1px solid #000000;">
+</canvas>
+
+<div id="drawing"></div>
+
+{% endblock %}
+
+
+{% block custom_js %}
+<script src="{{ url_for('main.static', filename='js/task.js') }}" type="text/javascript"> </script>
+{% endblock %}
