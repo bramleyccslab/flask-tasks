@@ -39,7 +39,7 @@ $ pip install -r requirements.txt
 Run development server
 
 ```bash
-$ python run.py run
+$ python run.py runserver
 ```
 
 
@@ -107,25 +107,24 @@ In general, it should be sufficient to modify the HTML/CSS/JS in `app.templates`
 	(this is done by maintaining a session cookie, which is hardly robust. A user can simply clear browser cookies and start again. 
 	If it needs to be more robust, you might consider some kind of IP address logging, probably hashing them first.)
 
-## Neil putting it in production additional:
+## Neil Installation as Production Environment:
 
-Once only: Create a python 3.7 app environment on the server using the Setup Python App icon on cPanel.
+- Once only: Create a python >3.4 environment on the server using the Setup Python App icon on cPanel.
 
-Name the folder you wanna put the flask stuff in (outside of the html folder) under `App Directory /home/wwwbramleylabppl/` (I used `flask`) and the root you want to work as your app address under `App Domain/URI` (I used `/flask`)
+- Name the folder you wanna put the flask stuff in (outside of the html folder) under `App Directory /home/wwwbramleylabppl/` (I used `flask`) and the root you want to work as your app address under `App Domain/URI` (I used `/flask`)
 
+- Secure shell terminal access to server:
+  ```bash
+  ssh wwwbramleylabppl@chost4.is.ed.ac.uk
+  ```
+- And input the SSH password `FXKrzpmglVza7nXWugJi`
 
-Secure shell terminal access to server:
-```bash
-ssh wwwbramleylabppl@chost4.is.ed.ac.uk
-```
-And input the SSH password `FXKrzpmglVza7nXWugJi`
-
-Then in the terminal:
-```bash
-source /home/wwwbramleylabppl/virtualenv/flask/3.6/bin/activate
-```
-Manually install the dependencies from `requirements.txt` there
-```bash
-pip install -r path/to/requirements.txt
-```
-Replace the contents of the outer folder with the flask app stuff `bramleylab.ppls.ed.ac.uk/exp`
+- Then in the terminal:
+  ```bash
+  source /home/wwwbramleylabppl/virtualenv/flask/3.6/bin/activate
+  ```
+- Manually install the dependencies from `requirements.txt` there
+  ```bash
+  pip install -r path/to/requirements.txt
+  ```
+- Replace the contents of the outer folder with the flask app stuff `bramleylab.ppls.ed.ac.uk/exp`
