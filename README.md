@@ -18,17 +18,28 @@ flask_session
 
 ### Running (development):
 
-Create a virtual environment
+Create a virtual environment.  I use Anaconda so in my case I do
+
+
+```bash
+$ conda create --py37flask python=3.7
+```
+then
+```bash
+$ conda activate py37flask
+```
+
+Or without Anaconda you can:
 
 ```bash
 $ python3 -m venv venv
 ```
-
-Activate virtual environment
-
+and
 ```bash
 $ source venv/bin/activate
 ```
+
+
 
 Install dependencies
 

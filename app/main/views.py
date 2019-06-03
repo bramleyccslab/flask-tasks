@@ -13,7 +13,7 @@ from app import tasks
 from app.utils.task_register import TasksError
 from .models import Participant
 from .models import TasksCompleteError
-from .models import YourTask   # Import Your Task model here
+from .models import DemoExperiment  # Import Your Task model here
 
 from . import main
 
@@ -68,13 +68,13 @@ def start(participant):
 def get_task(participant):
     return render_template('instructions.html')
 
-@tasks.register('GET_COMPREHENSION', method='GET')
-def get_task(participant):
-    return render_template('comprehension.html')
+# @tasks.register('GET_COMPREHENSION', method='GET')
+# def get_task(participant):
+#     return render_template('comprehension.html')
 
 @tasks.register('GET_TASK', method='GET')
 def get_task(participant):
-    return render_template('task.html')
+    return render_template('task.html', testvar = 'joe')
 
 @tasks.register('GET_POSTTEST', method='GET')
 def get_task(participant):
@@ -131,15 +131,16 @@ def task():
     try:
         participant.advance_state()
     except TasksCompleteError:
-        
+        # ///////////////////////
         session.clear() # FOR TESTING ONLY. Remove this line if not testing!!!!!!!!!!!!
-
+        # ///////////////////////
+        
         # If cannot, return Completed page
         return render_template('completed.html') # Page returned if task is already done
 
     try:
         # Return call to current task function,
-        # passining in request method for validation in getting task
+        # passing in request method for validation in getting task
         # and participant object
         return tasks(participant.current_state, request.method)(participant)
     except TasksError:

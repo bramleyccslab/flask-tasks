@@ -44,7 +44,6 @@ TASK_ORDER= Fixed(
             'NOT_STARTED', 
             'STARTED',
             'GET_INSTRUCTIONS',
-            'GET_COMPREHENSION',
             'GET_TASK',
             'GET_POSTTEST',
             'POST_RESULTS',
@@ -88,10 +87,12 @@ class Task(db.Entity):
 
 
 
-class YourTask(Task): # <-- Change the name of your task
+class DemoExperiment(Task): # <-- Change the name of your task
     ''' Here define the required database fields '''
+    response = Required(str) # Is an integer
+    trial = Required(int)
     score = Required(int) # Is an integer
-    thingy = Required(str) # Is a text field
+    demographics = Required(str) # Is a text field
 
 
     # See Pony documentation for field types: https://docs.ponyorm.org/api_reference.html#attribute-types
