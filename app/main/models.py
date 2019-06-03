@@ -45,8 +45,9 @@ TASK_ORDER= Fixed(
             'STARTED',
             'GET_INSTRUCTIONS',
             'GET_TASK',
-            'GET_POSTTEST',
             'POST_RESULTS',
+            'GET_POSTTEST',
+            'POST_DEMOGRAPHICS',
         )
 
 

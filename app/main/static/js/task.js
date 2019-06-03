@@ -7,6 +7,9 @@ var trial = 0;
 var response = [];
 var score = [];
 
+// var test = {{testvar}}; //DIDN'T WORK
+// console.log(test);
+
 $('#trial_counter').text('Question ' + (trial+1) + ' of ' + colours.length);
 
 $('#drawing').attr({fill: colours[trials[trial]],
@@ -33,13 +36,29 @@ $('.response_btns').click(function () {
 		$('#trial_counter').text('Question ' + (trial+1) + ' of ' + colours.length);
 	} else{
 		console.log('FINISHED TASK');
-		window.location = '/';
+		// window.location = '/';
+		//I WANNA POST THE RESULTS HERE
+		
+		$.ajax('/', {
+	    type: 'POST',  // http method
+	    data: { completed: true,
+	    		response: response,
+	    		trials: trials,
+	    		score: score,
+	    		demographics: "temp test demographics"
+	    		 },  // data to submit
+	    success: function (data, status, xhr) {
+	        console.log('status: ' + status + ', data: ' + data);
+	    },
+	    error: function (jqXhr, textStatus, errorMessage) {
+	            console.log('Error' + errorMessage);
+	    }
+	});
 	}	
 	
 });
 
-// var test = {{testvar}}; //DIDN'T WORK
-// console.log(test);
+
 
 //Start the main task function (just causes a refresh)
 // $('#done_comp').click(function () {

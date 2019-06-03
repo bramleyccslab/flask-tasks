@@ -74,12 +74,7 @@ def get_task(participant):
 
 @tasks.register('GET_TASK', method='GET')
 def get_task(participant):
-    return render_template('task.html', testvar = 'joe')
-
-@tasks.register('GET_POSTTEST', method='GET')
-def get_task(participant):
-    return render_template('posttest.html')
-
+    return render_template('task.html', testvar = 'a test variable')
 
 @tasks.register('POST_RESULTS', method='POST')
 def tasks_completed(participant):
@@ -96,6 +91,13 @@ def tasks_completed(participant):
         }
 
     return jsonify(resp)
+
+
+@tasks.register('GET_POSTTEST', method='GET')
+def get_task(participant):
+    return render_template('posttest.html')
+
+
 
 
 
