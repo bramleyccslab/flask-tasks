@@ -80,7 +80,7 @@ def get_task(participant):
 def tasks_completed(participant):
     try:
         result = json.loads(request.data)
-        task = YourTask(participant, **taks_result) # JSON data sent by AJAX should match fields specified in YourTask model
+        task = DemoExperiment(participant, **taks_result) # JSON data sent by AJAX should match fields specified in YourTask model
     except:
         return jsonify({'completed': False})
 

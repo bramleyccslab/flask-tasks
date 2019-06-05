@@ -40,8 +40,8 @@ $('.response_btns').click(function () {
 		//I WANNA POST THE RESULTS HERE
 		
 		$.ajax('/', {
-	    type: 'POST',  // http method
-	    data: { completed: true,
+	    type: 'POST',  // http method (True or true?)
+	    data: {completed: true,
 	    		response: response,
 	    		trials: trials,
 	    		score: score,
