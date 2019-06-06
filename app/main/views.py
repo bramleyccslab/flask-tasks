@@ -64,14 +64,6 @@ def generate_completed_token():
 def start(participant):
     return render_template('welcome.html')
 
-@tasks.register('GET_INSTRUCTIONS', method='GET')
-def get_task(participant):
-    return render_template('instructions.html')
-
-# @tasks.register('GET_COMPREHENSION', method='GET')
-# def get_task(participant):
-#     return render_template('comprehension.html')
-
 @tasks.register('GET_TASK', method='GET')
 def get_task(participant):
     return render_template('task.html', testvar = 'a test variable')
@@ -79,24 +71,24 @@ def get_task(participant):
 @tasks.register('POST_RESULTS', method='POST')
 def tasks_completed(participant):
     try:
-        result = json.loads(request.data)
-        task = DemoExperiment(participant, **taks_result) # JSON data sent by AJAX should match fields specified in YourTask model
+        print("hello world")
+        result = json.loads('{"trials": 1, "responses": "a"}')
+        # result = json.loads(request.data)
+        print(result)
+        # task = DemoExperiment(participant, **result)
+        # JSON data sent by AJAX should match fields specified in YourTask model
+        # print(task)
     except:
         return jsonify({'completed': False})
 
     # And here, generate JSON response
+
     resp = {
         'completed': True,
         'completed_token': generate_completed_token() # Add a function to generate a token e.g. for Mechanical Turk
         }
 
     return jsonify(resp)
-
-
-@tasks.register('GET_POSTTEST', method='GET')
-def get_task(participant):
-    return render_template('posttest.html')
-
 
 
 
