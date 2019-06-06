@@ -88,7 +88,7 @@ class Task(db.Entity):
 class DemoExperiment(Task): # <-- Change the name of your task
     ''' Here define the required database fields '''
     trials = Required(int) # Is an integer
-    responses = Required(str) #Is a string
+    responses = Required(int) #Is a string
 
 
     # See Pony documentation for field types: https://docs.ponyorm.org/api_reference.html#attribute-types

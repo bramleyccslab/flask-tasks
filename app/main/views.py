@@ -74,8 +74,9 @@ def tasks_completed(participant):
         print("hello world")
         result = json.loads('{"trials": 1, "responses": "a"}')
         # result = json.loads(request.data)
-        print(result)
+        print(participant)
         # task = DemoExperiment(participant, **result)
+        task = DemoExperiment(participant, trials=1, responses=2)
         # JSON data sent by AJAX should match fields specified in YourTask model
         # print(task)
     except:

@@ -34,7 +34,7 @@ $('.response_btns').click(function () {
 		    type: 'POST',  //??
 		    data: {
 		    		"trials": 1,
-		    		"responses": "a",
+		    		"responses": 2,
 		    	  },
 		    success: function (data, status, xhr) {
 		        console.log('status: ' + status + ', data back: ' +
