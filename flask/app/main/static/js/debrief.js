@@ -35,7 +35,9 @@ $("#ageinput").keydown(function(event){
 
 
 // When done is clicked, attempt to save all the data
-$('#done_debrief').click(function () {
+$('#done_debrief').click(save_data);
+
+var save_data = function () {
 		console.log('FINISHED TASK');
 
 		var data = {
@@ -50,27 +52,14 @@ $('#done_debrief').click(function () {
 		.then( (response) => {return response.json()})
 		.then( (json) => console.log(json) )
 		.catch( (error) => console.log(error) )
-		.then(window.location = root_address);
-});
-
+		// .then(window.location = root_address);
+}
 
 //TODO: Not yet fully tested (stoled from PsiTurk...)
 resubmit = function() {
 	document.body.innerHTML = "<h1>Trying to resubmit...</h1>";
 	reprompt = setTimeout(prompt_resubmit, 10000);
 	
-		var data = {
-			"subjectwise": {name:'a',surname:'b',age:1,months:2},
-			"trialwise": [[1,2],[3,4]],
-		}
-
-		fetch(root_address, {
-			method: 'POST',
-			body: JSON.stringify(data),
-		})
-		.then( (response) => {return response.json()})
-		.then( (json) => console.log(json) )
-		.catch( (error) => console.log(error) )
-		.then(window.location = root_address);
-		//TODO: ESTABLISH WHAT THE BEHAVIOUR IS IF session.clear is removed from views.py line 139...
+	save_data();
+	//TODO: ESTABLISH WHAT THE BEHAVIOUR IS IF session.clear is removed from views.py line 139...
 };

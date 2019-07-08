@@ -1,22 +1,57 @@
 console.log('loaded custom task js');
 
-var trials =  [0,9,1,8,2,3,7,4,6,5];//TODO shuffle these
-var colours = ['#d30023', '#1ca19a', '#f77612', '#437104',
-'#1d72a0', '#19ee0a', '#11edf4', '#d20101', '#86aa06', '#290a72']; //TODO read these from json
-var sizes = [10,20,30,40,50,60,70,80,90,100];//TODO read these from json
+var root_address = '/';// '/experiments/flaskdemo/';
+//TODO tie to debug?
 var trial = 0;
-var responses = [];
+var trials = _.shuffle([0,1,2,3,4,5,6,7,8,9]);
+var colours = []; //To be populated from stim.json
+var sizes = []; //To be populated from stim.json
+var responses = []; //Participants responses stored here
+
+//Load stimuli json data
+/////////////////////////
+fetch("./static/json/stim.json")
+.then(function(response) {
+	// tmp = response.json();
+    return response.json();
+  })
+.then(function(myJson) {
+	// console.log(JSON.stringify(myJson));
+	console.log(myJson);
+	colours = myJson.colours;
+	sizes = myJson.sizes;
+});
 
 
-///////////////////////
-// TASK SLIDE BEHAVIOUR
-//////////////////////
+// MAIN TRIAL BEHAVIOUR
+//////////////////////////
+var goto_task = function()
+{
+	$('#instructions').hide();
+	$('#debrief').hide();
+	$('#main_task').show();
+	advance_trial();
+}
 
+var goto_debrief = function()
+{
+	$('#instructions').hide();
+	$('#main_task').hide();
+	$('#debrief').show();
+}
 
-$('#trial_counter').text('Question ' + (trial+1) + ' of ' + colours.length);
-
-$('#drawing').attr({fill: colours[trials[trial]],
-	r:sizes[trials[trial]]});
+var advance_trial = function() {
+	trial++;
+	//console.log("executed advance trial", trial);
+	if (trial<trials.length)
+	{
+		$('#drawing').attr({fill: colours[trials[trial]],
+			r:sizes[trials[trial]]});
+		$('#trial_counter').text('Question ' + trial + ' of ' + colours.length);
+	} else if (trial==trials.length) {
+		goto_debrief();
+	}
+}
 
 $('#task_l_btn').click(function () {
 	responses[trial] = 'N';
@@ -26,16 +61,101 @@ $('#task_r_btn').click(function () {
 	responses[trial] = 'Y';
 });
 
-$('.response_btns').click(function () {
-	trial++;	
-	if (trial<trials.length)
-	{
-		$('#drawing').attr({fill: colours[trials[trial]],
-			r:sizes[trials[trial]]});
-		$('#trial_counter').text('Question ' + (trial+1) + ' of ' + colours.length);
-	} else if (trial==trials.length) {
-		goto_task_phase('debrief');
-	}
-	
+$('.response_btns').click(advance_trial);
+
+
+
+// INSTRUCTION SLIDE BEHAVIOUR
+// Step through slides
+// (currently manual but could list
+// and loop through if many pages)
+$('#ins1btn').click(function () {
+	$('#ins1').hide();
+	$('#ins2').show();
 });
 
+$('#ins2btn').click(function () {
+	$('#ins2').hide();
+	$('#comprehension').show();
+});
+
+
+// COMPREHENSION SLIDE BEHAVIOUR
+// Check whether all answers are correct
+var comp_checker = function() {
+
+	//Pull the selected values
+	var q1 = $('#comp_q1').val();
+	var q2 = $('#comp_q2').val();
+
+   // Add the correct answers here
+   answers = ["true","5"];
+
+   if(q1 == answers[0] && q2 == answers[1]){
+   		// Allow the start
+        alert('You got everything correct! Press "Start" to begin the experiment.');
+        $('#done_comp').show();//prop('visible', false);
+        $('#comp_check_btn').hide();//prop('visible', true);
+    } else {
+    	// Throw them back to the start of the instructions
+    	// Remove their answers and have them go through again
+		alert('You answered at least one question incorrectly! Please try again.');
+
+    	$('#comp_q1').prop('selectedIndex', 0);
+    	$('#comp_q2').prop('selectedIndex', 0);
+    	$('#done_comp').hide();//prop('disabled', true);
+    	$('#comp_check_btn').show();//prop('disabled', false);
+    	$('#ins1').show();
+		$('#comprehension').hide();
+    };
+}
+
+// Checks whether all questions were answered
+var comp_change_checker = function() {
+	var q1 = $('#comp_q1').val();
+	var q2 = $('#comp_q2').val();//Add more as needed
+
+	//Make sure start button is disabled because the answers haven't been checked
+	$('#done_comp').hide();//prop('disabled', true);
+
+ 	//Only release the check button if there is a response on all questions
+	if (q1 === 'noresp' || q2 === 'noresp')
+	{
+		$('#comp_check_btn').hide();//prop('disabled', true);
+	} else {
+		$('#comp_check_btn').show();//prop('disabled', false);
+	}
+};
+
+// Start the main task function (just causes a refresh)
+$('#done_comp').click(function () {
+	console.log('STARTING TASK');
+	goto_task();
+});
+
+// Listen for actions on radio buttons for when all questions answered
+$('.comp_questions').change(function() {
+	comp_change_checker();
+});
+
+// Answer checker function
+$('#comp_check_btn').click(function () { 
+	comp_checker();
+});
+
+
+
+
+
+////////////////
+// INITIAL VIEW:
+////////////////
+// Initially block both the check button and the start button
+$('#done_comp').hide();//prop('disabled', true);
+$('#comp_check_btn').hide();//prop('disabled', true);
+
+$('#instructions').show();
+$('#main_task').hide();
+$('#debrief').hide();
+
+//END

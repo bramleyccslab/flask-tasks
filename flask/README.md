@@ -22,7 +22,7 @@ Create a virtual environment.  I use Anaconda so in my case I do
 
 
 ```bash
-$ conda create --py37flask python=3.7
+$ conda create -n py37flask python=3.7
 ```
 then
 ```bash

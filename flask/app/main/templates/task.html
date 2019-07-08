@@ -6,24 +6,26 @@
 
 {% block content %}
 
-<div id = "instructions">
-	<h1>Instructions</h1>
+<div id = "instructions" class="container">
 
-	<div id="ins1">
-	<p>Page 1 text blah blah blah</p>
-	<button id="ins1btn">Continue</button>
+
+	<div id="ins1" class="slide">
+		<h1>Instructions</h1>
+		<p>Page 1 text blah blah blah</p>
+		<button id="ins1btn">Continue</button>
 	</div>
 
-	<div id="ins2" style="display:none">
-	<p>Page 2 text blah blah blah</p>
-	<button id="ins2btn">Continue</button>
+	<div id="ins2" style="display:none" class="slide">
+		<h1>Instructions</h1>
+		<p>Page 2 text blah blah blah</p>
+		<button id="ins2btn">Continue</button>
 	</div>
 
-	<div id="comprehension" style="display:none">
-		<h3>Comprehension Quiz</h3>
+	<div id="comprehension" style="display:none" class="slide">
+		<h1>Comprehension Quiz</h1>
 
 		<ol>
-		  <li>Question 1?   (true)<br>
+		  <li>Question 1?&nbsp;&nbsp;&nbsp;&nbsp;(true)<br>
 		    <select id="comp_q1" class="comp_questions">
 		      <option value="noresp" SELECTED></option>
 		      <option value="true">True</option>
@@ -31,7 +33,7 @@
 		    </select>
 		  </li>
 
-		  <li>Question 2?   (5)<br>
+		  <li>Question 2?&nbsp;&nbsp;&nbsp;&nbsp;(5)<br>
 		    <select id="comp_q2" class="comp_questions">
 		      <option value="noresp" SELECTED></option>
 		      <option value="1">1</option>
@@ -45,26 +47,35 @@
 		</ol>
 
 		<button id = "comp_check_btn">Check answers</button>
-		<button id = "done_comp" disabled>Start</button>
+		<button id = "done_comp">Start</button>
 	</div>
 </div>
 
-<div id="main_task">
-	<h1>Main task</h1>
 
-	<!-- {{ testvar }}  VARIABLES SET IN PYTHON CAN BE READ OUT HERE BUT HOW IN JS? -->
 
-	<h2 id="trial_counter"></h2>
-	<h3>Do you like this circle?</h3>
 
-	<svg width="300" height="200">
-	  <circle cx="150" cy="100" r="40" stroke="black" stroke-width="2" fill="white" id="drawing"/>
-	</svg>
-	<br>
-	<button id="task_l_btn" class="response_btns">No</button><button id="task_r_btn" class="response_btns">Yes</button>
+
+
+<div id="main_task" class="container">
+	<div class="slide">
+		<h1 id="trial_counter"></h1>
+		<h3>Do you like this circle?</h3>
+		<!-- {{ testvar }}  VARIABLES SET IN PYTHON CAN BE READ OUT HERE BUT HOW IN JS? -->
+		<svg width="300" height="200">
+		  <circle cx="150" cy="100" r="0" stroke="black" stroke-width="2" fill="white" id="drawing"/>
+		</svg>
+		<br>
+		<button id="task_l_btn" class="response_btns">No</button><button id="task_r_btn" class="response_btns">Yes</button>
+	</div>
 </div>
 
-<div id="debrief">
+
+
+
+
+
+
+<div id="debrief" class="container">
 	<h1>Demographics and Debrief</h1>
 
 	<p>You are finished!  Thank you for your contributions to science. You will be eligible for full payment once you answer the following questions.</p>
@@ -152,7 +163,7 @@
 
 
 {% block custom_js %}
-<script src="{{ url_for('main.static', filename='js/instructions.js') }}" type="text/javascript"> </script>
+<!-- <script src="{{ url_for('main.static', filename='js/instructions.js') }}" type="text/javascript"> </script> -->
 <script src="{{ url_for('main.static', filename='js/task.js') }}" type="text/javascript"> </script>
 <script src="{{ url_for('main.static', filename='js/debrief.js') }}" type="text/javascript"> </script>
 {% endblock %}

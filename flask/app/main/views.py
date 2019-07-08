@@ -1,5 +1,7 @@
 from functools import wraps
 import json
+import random
+import string
 
 from flask import jsonify
 from flask import redirect
@@ -56,7 +58,8 @@ THIS LINE SHOULD BE REMOVED IN PRODUCTION.
 def generate_completed_token():
     ''' Generates a unique completed token. 
     No idea what format this should be in! '''
-    return 'COMPLETED_TOKEN'
+    token = ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
+    return token
 
 
 
@@ -76,15 +79,9 @@ def tasks_completed(participant):
         result = json.loads(request.data)
         print(result)
         print(participant)
-        # task = DemoExperiment(participant, **result)
-        # 
         result = {key: str(value) for key, value in result.items()}
-
-        
-
-
         task = DemoExperiment(participant=participant, **result)
-        # JSON data sent by AJAX should match fields specified in YourTask model
+        # JSON data sent by AJAX/fetch should match fields specified in YourTask model
         # print(task)
 
     except Exception as e:
