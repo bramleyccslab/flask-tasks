@@ -6,12 +6,12 @@ var error_message = "<h1>Oops!</h1><p>Something went wrong submitting your HIT. 
 
 //Listen for all fields being complete
 posttest_button_disabler = function () {
-		if($("#feedback").val() === '' || $("#age").val() === '' || $("#sex").val() === 'noresp' || $("#engagement").val() === '--' || $("#difficulty").val() === '--') {
-			$('#done_debrief').prop('disabled',true);
-		} else{
-			$('#done_debrief').prop('disabled',false);
-		}
+	if($("#feedback").val() === '' || $("#age").val() === '' || $("#sex").val() === 'noresp' || $("#engagement").val() === '--' || $("#difficulty").val() === '--') {
+		$('#done_debrief').prop('disabled',true);
+	} else{
+		$('#done_debrief').prop('disabled',false);
 	}
+}
 
 prompt_resubmit = function() {
 	document.body.innerHTML = error_message;
@@ -27,9 +27,9 @@ $(".posttestQ").change(function () {
 // Block enter in age field
 $("#ageinput").keydown(function(event){
 	if(event.keyCode == 13) {
-  		event.preventDefault();
-  		console.log('blocked enter in age field');
-  		return false;
+		event.preventDefault();
+		console.log('blocked enter in age field');
+		return false;
 	}
 });
 
@@ -38,12 +38,28 @@ $("#ageinput").keydown(function(event){
 $('#done_debrief').click(save_data);
 
 var save_data = function () {
-		console.log('FINISHED TASK');
+	console.log('FINISHED TASK');
 
-		var data = {
-			"subjectwise": {name:'a',surname:'b',age:1,months:2},
-			"trialwise": [[1,2],[3,4]],
+	var end_time = new Date();
+
+	var data = {
+		"subjectwise": {
+			age:$("#ageinput").val(),
+			gender:$("#sex").val(),
+			date:String(end_time.getFullYear()) + '_' +
+				String(end_time.getMonth() + 1).padStart(2, '0') + '_' +
+				String(end_time.getMonth() + 1).padStart(2, '0'),
+			time:String(end_time.getHours()+ 1).padStart(2, '0') + '_' +
+				String(end_time.getMinutes() + 1).padStart(2, '0')+ '_' +
+				String(end_time.getSeconds() + 1).padStart(2, '0'),
+			instructions_duration:start_task_time - start_time,
+			task_duration:end_time - start_task_time,
+			engaging:$("#engagement").val(),
+			difficult:$("#difficulty").val()},
+		"trialwise":{trials, responses},
 		}
+
+		console.log(data);
 
 		fetch(root_address, {
 			method: 'POST',
@@ -53,7 +69,10 @@ var save_data = function () {
 		.then( (json) => console.log(json) )
 		.catch( (error) => console.log(error) )
 		// .then(window.location = root_address);
-}
+	}
+
+
+
 
 //TODO: Not yet fully tested (stoled from PsiTurk...)
 resubmit = function() {

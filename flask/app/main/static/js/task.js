@@ -7,16 +7,17 @@ var trials = _.shuffle([0,1,2,3,4,5,6,7,8,9]);
 var colours = []; //To be populated from stim.json
 var sizes = []; //To be populated from stim.json
 var responses = []; //Participants responses stored here
+var start_time = new Date();
+var start_task_time;
+var end_time;
 
 //Load stimuli json data
 /////////////////////////
 fetch("./static/json/stim.json")
 .then(function(response) {
-	// tmp = response.json();
     return response.json();
   })
 .then(function(myJson) {
-	// console.log(JSON.stringify(myJson));
 	console.log(myJson);
 	colours = myJson.colours;
 	sizes = myJson.sizes;
@@ -30,6 +31,7 @@ var goto_task = function()
 	$('#instructions').hide();
 	$('#debrief').hide();
 	$('#main_task').show();
+	start_task_time = new Date();
 	advance_trial();
 }
 
@@ -48,17 +50,17 @@ var advance_trial = function() {
 		$('#drawing').attr({fill: colours[trials[trial]],
 			r:sizes[trials[trial]]});
 		$('#trial_counter').text('Question ' + trial + ' of ' + colours.length);
-	} else if (trial==trials.length) {
+	} else if (trial>trials.length) {
 		goto_debrief();
 	}
 }
 
 $('#task_l_btn').click(function () {
-	responses[trial] = 'N';
+	responses.push('N');
 });
 
 $('#task_r_btn').click(function () {
-	responses[trial] = 'Y';
+	responses.push('Y');
 });
 
 $('.response_btns').click(advance_trial);
@@ -94,8 +96,8 @@ var comp_checker = function() {
    if(q1 == answers[0] && q2 == answers[1]){
    		// Allow the start
         alert('You got everything correct! Press "Start" to begin the experiment.');
-        $('#done_comp').show();//prop('visible', false);
-        $('#comp_check_btn').hide();//prop('visible', true);
+        $('#done_comp').show();
+        $('#comp_check_btn').hide();
     } else {
     	// Throw them back to the start of the instructions
     	// Remove their answers and have them go through again
@@ -103,8 +105,8 @@ var comp_checker = function() {
 
     	$('#comp_q1').prop('selectedIndex', 0);
     	$('#comp_q2').prop('selectedIndex', 0);
-    	$('#done_comp').hide();//prop('disabled', true);
-    	$('#comp_check_btn').show();//prop('disabled', false);
+    	$('#done_comp').hide();
+    	$('#comp_check_btn').show();
     	$('#ins1').show();
 		$('#comprehension').hide();
     };
@@ -116,14 +118,14 @@ var comp_change_checker = function() {
 	var q2 = $('#comp_q2').val();//Add more as needed
 
 	//Make sure start button is disabled because the answers haven't been checked
-	$('#done_comp').hide();//prop('disabled', true);
+	$('#done_comp').hide();
 
  	//Only release the check button if there is a response on all questions
 	if (q1 === 'noresp' || q2 === 'noresp')
 	{
-		$('#comp_check_btn').hide();//prop('disabled', true);
+		$('#comp_check_btn').hide();
 	} else {
-		$('#comp_check_btn').show();//prop('disabled', false);
+		$('#comp_check_btn').show();
 	}
 };
 

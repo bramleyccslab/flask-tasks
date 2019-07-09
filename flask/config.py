@@ -1,13 +1,11 @@
 import os
 from app.utils.random_order import Fixed, Random
 
-
 app_dir = os.path.abspath(os.path.dirname(__file__))
 
 class BaseConfig:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'A SECRET KEY' # SET A SECRET KEY FOR PRODUCTION
     SESSION_TYPE = 'filesystem'
-
 
 
 class DevelopmentConfig(BaseConfig):
@@ -24,7 +22,6 @@ class DevelopmentConfig(BaseConfig):
     }
    
     
-
 class TestingConfig(BaseConfig):
     SERVER_NAME = 'testservername.none'
     DEBUG = True

@@ -49,8 +49,6 @@ TASK_ORDER= Fixed(
 
 
 
-
-
 class Participant(db.Entity):
     ''' 
     The Participant model.

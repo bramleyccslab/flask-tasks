@@ -40,7 +40,7 @@ Task functions have access to all Flask methods (request, response).
 
 The registered tasks (currently) do the following:
 
-1) On first load, return 'task_intro.html'. This should be an introduction page to the task.
+1) On first load, return 'welcome.html'. This should be an introduction page to the task.
 2) On second load, return the task ('task.html').
 3) Third load should be submission of task data via AJAX. This will return a JSON object
     with 'completed' set to True (if valid) or False (if invalid). If a completed token, 
@@ -56,8 +56,7 @@ THIS LINE SHOULD BE REMOVED IN PRODUCTION.
 '''
 
 def generate_completed_token():
-    ''' Generates a unique completed token. 
-    No idea what format this should be in! '''
+    ''' Generates a unique completed token. '''
     token = ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
     return token
 
@@ -65,11 +64,11 @@ def generate_completed_token():
 
 @tasks.register('STARTED', method='GET')
 def start(participant):
-    return render_template('welcome.html')
+    return render_template('welcome.html', root_string = 'my root string')
 
 @tasks.register('GET_TASK', method='GET')
 def get_task(participant):
-    return render_template('task.html', testvar = 'a test variable')
+    return render_template('task.html', root_string = 'my root string')
 
 @tasks.register('POST_RESULTS', method='POST')
 def tasks_completed(participant):
