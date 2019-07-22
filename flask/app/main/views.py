@@ -18,8 +18,8 @@ from .models import TasksCompleteError
 from .models import DemoExperiment  # Import Your Task model here
 
 from . import main
-
-
+# import config
+# from config import DEBUG
 '''
 
 Explanation
@@ -55,20 +55,26 @@ THIS LINE SHOULD BE REMOVED IN PRODUCTION.
 
 '''
 
+# if DEBUG:
+root_string = '/'
+# else:
+root_string = 'experiments/flaskdemo'
+root_string = 'flaskdemo'
+# print(root_string)
+
 def generate_completed_token():
     ''' Generates a unique completed token. '''
     token = ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
     return token
 
 
-
 @tasks.register('STARTED', method='GET')
 def start(participant):
-    return render_template('welcome.html', root_string = 'my root string')
+    return render_template('welcome.html', root_string = root_string)
 
 @tasks.register('GET_TASK', method='GET')
 def get_task(participant):
-    return render_template('task.html', root_string = 'my root string')
+    return render_template('task.html', root_string = root_string)
 
 @tasks.register('POST_RESULTS', method='POST')
 def tasks_completed(participant):
@@ -94,8 +100,11 @@ def tasks_completed(participant):
         'completed_token': generate_completed_token() # Add a function to generate a token e.g. for Mechanical Turk
         }
 
-    return jsonify(resp)
 
+    return jsonify(resp)
+    #return render_template('complete.html',
+    #                       first_ting=jsonify(resp),
+    #                       resp=resp)
 
 
 
@@ -136,7 +145,7 @@ def task():
         # ///////////////////////
         
         # If cannot, return Completed page
-        return render_template('completed.html') # Page returned if task is already done
+        return render_template('previously_completed.html') # Page returned if task is already done
 
     try:
         # Return call to current task function,

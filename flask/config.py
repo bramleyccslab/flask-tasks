@@ -3,6 +3,8 @@ from app.utils.random_order import Fixed, Random
 
 app_dir = os.path.abspath(os.path.dirname(__file__))
 
+test_var = 2
+
 class BaseConfig:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'A SECRET KEY' # SET A SECRET KEY FOR PRODUCTION
     SESSION_TYPE = 'filesystem'

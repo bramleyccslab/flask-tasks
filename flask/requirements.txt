@@ -3,3 +3,4 @@ flask_script
 flask_session
 pony
 pytest
+psycopg2-binary 

@@ -56,11 +56,10 @@
 
 
 
-<div id="main_task" class="container">
+<div id="main_task" class="container" style="display:none;">
 	<div class="slide">
 		<h1 id="trial_counter"></h1>
 		<h3>Do you like this circle?</h3>
-		<!-- {{ testvar }}  VARIABLES SET IN PYTHON CAN BE READ OUT HERE BUT HOW IN JS? -->
 		<svg width="300" height="200">
 		  <circle cx="150" cy="100" r="0" stroke="black" stroke-width="2" fill="white" id="drawing"/>
 		</svg>
@@ -75,7 +74,7 @@
 
 
 
-<div id="debrief" class="container">
+<div id="debrief" class="container" style="display:none;">
 	<h1>Demographics and Debrief</h1>
 
 	<p>You are finished!  Thank you for your contributions to science. You will be eligible for full payment once you answer the following questions.</p>
@@ -85,10 +84,6 @@
 	<div class="instructions well">
 
 	    <form id="postquiz" action="debrief" method="post">
-
-	        <p>Do you have any comments regarding the experiment?</p>
-
-	        <textarea name="feedback" id="feedback" class="posttestQ" style="width:760px; height:100px;"  ></textarea> 
 
 	        <p><b>1.</b> How old are you?:
 	          <input id="ageinput" class="posttestQ" type="number" maxlength = "3" name="age" id="age" min="18" max="100" step = "1"> years
@@ -154,6 +149,10 @@
 	        </div>
 	        <!-- end of a question -->
 	    </form>
+	    <br>
+	    <p>Do you have any comments regarding the experiment?</p>
+	    <textarea name="feedback" id="feedback" class="posttestQ" style="width:760px; height:100px;"  ></textarea> 
+		<br>
 	    <button id="done_debrief" disabled>Done</button>
 	</div>
 </div>
@@ -163,7 +162,7 @@
 
 
 {% block custom_js %}
-<!-- <script src="{{ url_for('main.static', filename='js/instructions.js') }}" type="text/javascript"> </script> -->
+<script> var root_string = '{{root_string}}'; </script><!-- GET THE ROOT FROM FLASK tO JS -->
 <script src="{{ url_for('main.static', filename='js/task.js') }}" type="text/javascript"> </script>
 <script src="{{ url_for('main.static', filename='js/debrief.js') }}" type="text/javascript"> </script>
 {% endblock %}

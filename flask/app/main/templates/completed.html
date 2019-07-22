@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block content %}
-<h1>You have already completed the task</h1>
-<p>You can't do it again</p>
+<h1>Well done, you have completed the task!</h1>
+<p>Your completion code is: {{resp[completion_token]}}</p>
+<p>Also: {{first_ting}}</p>
 {% endblock %}

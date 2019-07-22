@@ -1,7 +1,7 @@
-console.log('loaded custom task js');
-
-var root_address = '/';// '/experiments/flaskdemo/';
-//TODO tie to debug?
+////////////////////////////////////////
+// Governs behaviour of instructions
+// and main task and progression through
+// //////////////////////////////////////
 var trial = 0;
 var trials = _.shuffle([0,1,2,3,4,5,6,7,8,9]);
 var colours = []; //To be populated from stim.json
@@ -13,7 +13,7 @@ var end_time;
 
 //Load stimuli json data
 /////////////////////////
-fetch("./static/json/stim.json")
+fetch("/experiments/flaskdemo/static/json/stim.json")
 .then(function(response) {
     return response.json();
   })
@@ -21,7 +21,8 @@ fetch("./static/json/stim.json")
 	console.log(myJson);
 	colours = myJson.colours;
 	sizes = myJson.sizes;
-});
+})
+.catch( (error) => console.log(error) );
 
 
 // MAIN TRIAL BEHAVIOUR

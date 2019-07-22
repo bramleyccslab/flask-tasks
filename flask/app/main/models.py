@@ -4,8 +4,6 @@ from pony.orm import *
 
 from app import db
 from app.utils.random_order import Fixed, Random
-
-
 '''
 
 Explanation

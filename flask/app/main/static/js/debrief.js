@@ -1,5 +1,3 @@
-// console.log('loaded debrief js');
-
 var error_message = "<h1>Oops!</h1><p>Something went wrong submitting your HIT. " + 
 "This might happen if you lose your internet connection. Press the button to resubmit.</p><button id='resubmit'>Resubmit</button>";
 
@@ -34,8 +32,6 @@ $("#ageinput").keydown(function(event){
 });
 
 
-// When done is clicked, attempt to save all the data
-$('#done_debrief').click(save_data);
 
 var save_data = function () {
 	console.log('FINISHED TASK');
@@ -44,14 +40,15 @@ var save_data = function () {
 
 	var data = {
 		"subjectwise": {
-			age:$("#ageinput").val(),
-			gender:$("#sex").val(),
 			date:String(end_time.getFullYear()) + '_' +
 				String(end_time.getMonth() + 1).padStart(2, '0') + '_' +
-				String(end_time.getMonth() + 1).padStart(2, '0'),
+				String(end_time.getDay() + 1).padStart(2, '0'),
 			time:String(end_time.getHours()+ 1).padStart(2, '0') + '_' +
 				String(end_time.getMinutes() + 1).padStart(2, '0')+ '_' +
 				String(end_time.getSeconds() + 1).padStart(2, '0'),
+			age:$("#ageinput").val(),
+			gender:$("#sex").val(),
+			feedback:$('#feedback').val(),
 			instructions_duration:start_task_time - start_time,
 			task_duration:end_time - start_task_time,
 			engaging:$("#engagement").val(),
@@ -61,24 +58,30 @@ var save_data = function () {
 
 		console.log(data);
 
-		fetch(root_address, {
+		fetch(root_string, {
 			method: 'POST',
 			body: JSON.stringify(data),
 		})
-		.then( (response) => {return response.json()})
+		.then( (response) => {
+			console.log(response);
+			return response.json()})
 		.then( (json) => console.log(json) )
 		.catch( (error) => console.log(error) )
-		// .then(window.location = root_address);
+		// .then(window.location = root_string);
 	}
 
 
 
 
 //TODO: Not yet fully tested (stoled from PsiTurk...)
-resubmit = function() {
-	document.body.innerHTML = "<h1>Trying to resubmit...</h1>";
-	reprompt = setTimeout(prompt_resubmit, 10000);
+// resubmit = function() {
+// 	document.body.innerHTML = "<h1>Trying to resubmit...</h1>";
+// 	reprompt = setTimeout(prompt_resubmit, 10000);
 	
-	save_data();
-	//TODO: ESTABLISH WHAT THE BEHAVIOUR IS IF session.clear is removed from views.py line 139...
-};
+// 	save_data();
+// 	//TODO: ESTABLISH WHAT THE BEHAVIOUR IS IF session.clear is removed from views.py line 139...
+// };
+
+
+// When done is clicked, attempt to save all the data
+$('#done_debrief').click(save_data);
