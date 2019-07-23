@@ -42,7 +42,7 @@ var save_data = function () {
 		"subjectwise": {
 			date:String(end_time.getFullYear()) + '_' +
 				String(end_time.getMonth() + 1).padStart(2, '0') + '_' +
-				String(end_time.getDay() + 1).padStart(2, '0'),
+				String(end_time.getDate() + 1).padStart(2, '0'),
 			time:String(end_time.getHours()+ 1).padStart(2, '0') + '_' +
 				String(end_time.getMinutes() + 1).padStart(2, '0')+ '_' +
 				String(end_time.getSeconds() + 1).padStart(2, '0'),
@@ -65,12 +65,9 @@ var save_data = function () {
 		.then( (response) => {
 			console.log(response);
 			return response.json()})
-		.then( (json) => console.log(json) )
-		.catch( (error) => console.log(error) )
-		// .then(window.location = root_string);
+		.then( (json) => goto_complete(json.completed_token) )
+		.catch( (error) => console.log(error) );
 	}
-
-
 
 
 //TODO: Not yet fully tested (stoled from PsiTurk...)

@@ -84,7 +84,9 @@
 	<div class="instructions well">
 
 	    <form id="postquiz" action="debrief" method="post">
-
+			<p>Do you have any comments regarding the experiment?</p>
+		    <textarea name="feedback" id="feedback" class="posttestQ" style="width:760px; height:100px;"  ></textarea> 
+			<br>
 	        <p><b>1.</b> How old are you?:
 	          <input id="ageinput" class="posttestQ" type="number" maxlength = "3" name="age" id="age" min="18" max="100" step = "1"> years
 	        </p>
@@ -150,11 +152,14 @@
 	        <!-- end of a question -->
 	    </form>
 	    <br>
-	    <p>Do you have any comments regarding the experiment?</p>
-	    <textarea name="feedback" id="feedback" class="posttestQ" style="width:760px; height:100px;"  ></textarea> 
-		<br>
+	    
 	    <button id="done_debrief" disabled>Done</button>
 	</div>
+</div>
+
+<div id="completed" class="container" style="display:none;">
+	<h1>Your completion code is:</h1>
+	<h2 id="completion_code_tb"></h2>
 </div>
 {% endblock %}
 

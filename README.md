@@ -122,20 +122,24 @@ In general, it should be sufficient to modify the HTML/CSS/JS in `app.templates`
 
 - Once only: Create a python >3.4 environment on the server using the Setup Python App icon on cPanel.
 
-- Name the folder you wanna put the flask stuff in (outside of the html folder) under `App Directory /home/wwwbramleylabppl/` (I used `flask`) and the root you want to work as your app address under `App Domain/URI` (I used `/flask`)
+- Name the folder you wanna put the flask stuff in (outside of the html folder) under `App Directory /home/wwwbramleylabppl/` (I used `flask`) and the root you want to work as your app address under `App Domain/URI` (I used `bramleylab.ppls.ed.ac.uk/experiments/flaskdemo`)
 
 - Secure shell terminal access to server:
   ```bash
   ssh wwwbramleylabppl@chost4.is.ed.ac.uk
   ```
-- And input the SSH password `FXKrzpmglVza7nXWugJi`
+- And input the SSH password (Ask Neil)
 
 - Then in the terminal:
   ```bash
-  source /home/wwwbramleylabppl/virtualenv/flask/3.6/bin/activate
+  source /home/wwwbramleylabppl/virtualenv/flask/3.7/bin/activate
   ```
 - Manually install the dependencies from `requirements.txt` there
   ```bash
   pip install -r path/to/requirements.txt
   ```
-- Replace the contents of the outer folder with the flask app stuff `bramleylab.ppls.ed.ac.uk/exp`
+- Replace the contents the folder with the flask app stuff `bramleylab.ppls.ed.ac.uk/flask`
+
+- Data appears in postgres database
+
+-`read_in_from_server.R` can be used locally to pull the data and read it into R dataframes and save it as `.rdata`

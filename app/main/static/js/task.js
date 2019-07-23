@@ -32,6 +32,7 @@ var goto_task = function()
 	$('#instructions').hide();
 	$('#debrief').hide();
 	$('#main_task').show();
+	$('#completed').hide();
 	start_task_time = new Date();
 	advance_trial();
 }
@@ -41,8 +42,17 @@ var goto_debrief = function()
 	$('#instructions').hide();
 	$('#main_task').hide();
 	$('#debrief').show();
+	$('#completed').hide();
 }
 
+var goto_complete = function (code) {
+	$('#instructions').hide();
+	$('#main_task').hide();
+	$('#debrief').hide();
+	$('#completed').show();
+
+	$('#completion_code_tb').text(code);
+}
 var advance_trial = function() {
 	trial++;
 	//console.log("executed advance trial", trial);
