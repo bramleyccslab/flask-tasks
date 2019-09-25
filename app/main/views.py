@@ -57,9 +57,8 @@ THIS LINE SHOULD BE REMOVED IN PRODUCTION.
 
 # if DEBUG:
 root_string = '/'
-# else:
-root_string = 'experiments/flaskdemo'
-root_string = 'flaskdemo'
+# else if PRODUCTION:
+# root_string = 'flaskdemo'
 # print(root_string)
 
 def generate_completed_token():
