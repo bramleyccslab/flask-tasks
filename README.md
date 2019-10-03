@@ -29,7 +29,7 @@ then
 $ conda activate py37flask
 ```
 
-Or without Anaconda you can:
+Or without Anaconda (i.e. on the server) you can:
 
 ```bash
 $ python3 -m venv venv
@@ -105,6 +105,10 @@ to add more than one task and/or randomise the order). In general, don't worry a
 
 ## How to modify:
 
+
+
+### Modifying the task
+
 In general, it should be sufficient to modify the HTML/CSS/JS in `app.templates`.
 
 - `task_intro.html` is a 'welcome page'. Put any description (or whatever) here. Add a link to start the task pointing to the root url ('/').
@@ -118,11 +122,11 @@ In general, it should be sufficient to modify the HTML/CSS/JS in `app.templates`
 	(this is done by maintaining a session cookie, which is hardly robust. A user can simply clear browser cookies and start again. 
 	If it needs to be more robust, you might consider some kind of IP address logging, probably hashing them first.)
 
-## Neil Installation as Production Environment:
+## Installation in Production Environment:
 
-- Once only: Create a python >3.4 environment on the server using the Setup Python App icon on cPanel.
+- Once only: Create a python >3.4 (3.7.3 works) environment on the server using the Setup Python App icon on cPanel.
 
-- Name the folder you wanna put the flask stuff in (outside of the html folder) under `App Directory /home/wwwbramleylabppl/` (I used `flask`) and the root you want to work as your app address under `App Domain/URI` (I used `bramleylab.ppls.ed.ac.uk/experiments/flaskdemo`)
+- Name the folder you wanna put the flask stuff in (outside of the html folder) under `App Directory /home/wwwbramleylabppl/` (I used `flask` for the demo) and the root you want to work as your app address under `App Domain/URI` (I used `bramleylab.ppls.ed.ac.uk/experiments/flaskdemo`)
 
 - Secure shell terminal access to server:
   ```bash
@@ -143,3 +147,12 @@ In general, it should be sufficient to modify the HTML/CSS/JS in `app.templates`
 - Data appears in postgres database
 
 -`read_in_from_server.R` can be used locally to pull the data and read it into R dataframes and save it as `.rdata`
+
+### Duplicating
+
+- Create another python 3.7.3 app in Setup Python App in cPanel with a name associated with your experiment and a new folder (e.g. /flask2adapt)
+- Change the table names in models.py to unique tables reflecting your experiment (e.g. flask2adapt_participants around line 58 and flask2adapt_task around line 88)
+- Update root_string in view.py to new desired url (e.g. /flask2adapt)
+- Open terminal, activate environment and install dependencies as above
+- Restart the new python app in Setup Python Apps
+- Try the url and check the postgres database.  There should be new tables.  You may need to change the priviledges to view them, if so try Tables->Privileges->Grant.
