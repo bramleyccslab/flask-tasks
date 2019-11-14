@@ -150,9 +150,11 @@ In general, it should be sufficient to modify the HTML/CSS/JS in `app.templates`
 
 ### Duplicating
 
-- Create another python 3.7.3 app in Setup Python App in cPanel with a name associated with your experiment and a new folder (e.g. /flask2adapt). Note - In some instances the python 3.7.3 app might enable you to install the python libraries that you wish to use. You can try e.g., python 3.6.8 instead, this solved the problem for some of us
+- Create another python 3.7.3 app in Setup Python App in cPanel with a name associated with your experiment and a new folder (e.g. /flask2adapt). Note - In some instances the python 3.7.3 app might not enable you to install the python libraries that you wish to use. You can try e.g., python 3.6.8 instead (this solved the problem)
 - Change the table names in models.py to unique tables reflecting your experiment (e.g. flask2adapt_participants around line 58 and flask2adapt_task around line 88)
-- Update root_string in view.py to new desired url (e.g. flask2adapt)
+- Update root_string in view.py to new desired url (e.g. flask2adapt) 
+- in the passenger_wsgi.py file, make sure that the line of code defining the application variable looks like this:
+application = create_app(os.getenv('FLASK_ENV') or 'config.ProductionConfig')
 - Open terminal, activate environment and install dependencies as above
 - Restart the new python app in Setup Python Apps (using cPanel)
-- Try the url and check the postgres database.  There should be new tables.  You may need to change the priviledges to view them, if so try Tables->Privileges->Grant.
+- Try the url and check the postgres database.  There should be new tables.  You may need to change the priviledges to view them, if so try Tables->Privileges->Grant (Note, you will also go to PostgresSQL Databayses and press synchronise grants)
