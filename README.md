@@ -136,7 +136,7 @@ application = create_app(os.getenv('FLASK_ENV') or 'config.ProductionConfig')
 	  ```
 	- And input the SSH password (Ask Neil)
 
-	- Then in the terminal activate your environment:
+	- And activate:
 	  ```bash
 	  source /home/wwwbramleylabppl/virtualenv/yourpythonappname/3.7/bin/activate
 	  ```
@@ -145,9 +145,12 @@ application = create_app(os.getenv('FLASK_ENV') or 'config.ProductionConfig')
 	  pip install -r path/to/requirements.txt
 	  ```
 
-- Restart the Python app and check is the task appears
+- Restart the Python app and check if the task appears
 
-- Go to PhpPgAdmin on chost to check if your tables have appeared in the database.  Participants should have lines for every new, incomplete or ongoing session and Task should have a line for every complete session
+- Check the Errors App if its not working.  You may have to hard refresh the browser when viewing the app to see the latest version.
+
+- For actually running a study make sure to comment out `session.clear()` around line 143 so that participants cannot repeat the task.  (When in development the final refresh allows one to restart the task.)
+- Go to PhpPgAdmin on cHost to check if your tables have appeared in the database.  Participants should have lines for every new, incomplete or ongoing session and Task should have a line for every complete session
 
 - `read_in_from_server.R` can be adapted to locally to pull the data and read it into R dataframes and save it as `.rdata`
 
