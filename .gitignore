@@ -4,6 +4,7 @@
 *.sql
 *.sqlite
 *.db3
+.RData
 .Rhistory
 
 # OS generated files #
@@ -16,4 +17,7 @@
 ehthumbs.db
 Thumbs.db
 
+# Auto-created files
+######################
+__pycache__
 flask_session/*
