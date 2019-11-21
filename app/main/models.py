@@ -10,7 +10,7 @@ Explanation
 -----------
 
 Everything in this file should be left alone, apart from
-the YourTask class. This class should specify the data 
+the YourTask class. This class should specify the data
 fields you wish to capture from the task.
 
 To interface with the database, all classes use the Pony
@@ -27,7 +27,7 @@ class TasksCompleteError(Exception):
 
 
 '''
-    TASK_ORDER is a list of tasks, that should also be registered 
+    TASK_ORDER is a list of tasks, that should also be registered
     with the @tasks.register decorator in views.py.
 
     There is a 'Random' class that randomises the order, if required.
@@ -39,7 +39,7 @@ class TasksCompleteError(Exception):
 
 '''
 TASK_ORDER= Fixed(
-            'NOT_STARTED', 
+            'NOT_STARTED',
             'STARTED',
             'GET_TASK',
             'POST_RESULTS',
@@ -48,13 +48,14 @@ TASK_ORDER= Fixed(
 
 
 class Participant(db.Entity):
-    ''' 
+    '''
     The Participant model.
-    
+
     Keeps track of the participant state and advances through states
-    as specified in TASK_ORDER. 
+    as specified in TASK_ORDER.
 
     '''
+    _table_ = 'participant' # <-- Change the name of your participant table
     id = PrimaryKey(uuid.UUID)
     task_order = Required(StrArray, default=lambda: list(TASK_ORDER))
     current_state = Required(str, default='NOT_STARTED')
@@ -66,7 +67,7 @@ class Participant(db.Entity):
         db.Entity.__init__(self, *args, **kwargs)
 
 
-    
+
     def advance_state(self):
         ''' Method to track state of user and advance through task states '''
 
@@ -74,7 +75,7 @@ class Participant(db.Entity):
             raise TasksCompleteError
 
         current_state_index = self.task_order.index(self.current_state)
-        
+
         try:
             self.current_state = self.task_order[current_state_index + 1]
         except (IndexError):
@@ -85,6 +86,7 @@ class Participant(db.Entity):
 
 class Task(db.Entity):
     ''' Generic task instance '''
+    _table_ = 'task' # <-- Change the name of your task table
     participant = Required('Participant')
 
 
