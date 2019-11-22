@@ -113,37 +113,58 @@ In general, it should be sufficient to modify the HTML/CSS/JS in `app.templates`
 
 ## Installation in Production Environment:
 
-1. Prepare your task folder and upload it to the home directory of the lab server (see handbook). It's suggested to clear system files, auto-created pycaches, flask_session, local dbs, .git folders etc. when preping this folder.
-	- In the `main/view.py` file, around line 60, set `root_string` to be a unique name of your experiment, instead of `/`. This will be the entry point of your experiment once it's live online, e.g. `myexp` for `bramleylab.ppls.ed.ac.uk/experiments/myexp`. Your root string should be different from any existing experiment served by flask on the lab server.
-	- In the `main/models.py` file, edit the table names for the `Participant` class and `Task` class. (e.g. set ` _table_ = 'nb_flaskdemo_participant'` within the Participant class and `_table_ = 'nb_flaskdemo_task'` around line 58 within the Task class, in `main/models.py` around line 88). To help us differentiate tables, it's recommended to prefix these tables with your initials and experiment name. These table names need to be unique too.
+### 1. Prepare a task folder for production
 
-2. Log into cPanel (see handbook), use the "Setup Python App" app to create a new python >3.4  environment. Note:
-	- Neil and Bonan found 3.7.3 worked for them, Philipp found he had to use 3.6.8 to include some of his libraries.
-	- For the "Application root" field, put the name of the task folder you uploaded. (Neil used `flask` for the demo, so the app is housed in `bramleylab.ppls.ed.ac.uk/flask`).
-	- For the "Application URL" field, put `experiment/[ROOT_STRING]`, where root_string is the one you set in the `main/view.py` file in your task folder (around line 60).
-	- In the `passenger_wsgi.py` file, make sure that the line of code defining the application variable looks like this:
-		```application = create_app(os.getenv('FLASK_ENV') or 'config.ProductionConfig')```
-	Note: Bonan found `application = create_app('config.ProductionConfig')` works for her. But Philipp suggests to use the one above.
+- In the `main/view.py` file, around line 60, set `root_string` to be a unique name of your experiment (e.g. `myexp` for `bramleylab.ppls.ed.ac.uk/experiments/myexp`. 
 
-3. Once you have created the python app, it automatically shows you the commands you need to run next.
-	- Open your terminal, secure shell terminal access to server:
-	  ```bash
-	  ssh wwwbramleylabppl@chost4.is.ed.ac.uk
-	  ```
-	- And input the SSH password (Ask Neil)
+- In the `main/models.py` file, edit the table names for the `Participant` class and `Task` class. (e.g. set ` _table_ = 'nb_flaskdemo_participant'` within the Participant class and `_table_ = 'nb_flaskdemo_task'` around line 58 within the Task class, in `main/models.py` around line 88). 
 
-	- Then activate the python you just created (you can copy paste from the "Setup Python App" page - in the yellow box on the top of the page after the app is created)
-	  ```bash
-	  source /home/wwwbramleylabppl/virtualenv/[yourpythonappname]/[yourpythonversion]/bin/activate
-	  ```
-	- `cd` to the location of your task folder, and manullly install the dependencies from `requirements.txt` there
-	  ```bash
-	  pip install -r path/to/requirements.txt
-	  ```
+- To help us differentiate tables, it's recommended to prefix these tables with your initials and experiment name. These table names need to be unique too.
 
-4. Now, restart the Python app and check if the task appears.
+- Upload it to the home directory of the lab server (see handbook). It's suggested to clear system files, auto-created pycaches, flask_session, local dbs, .git folders etc. before the upload.
 
-5. Go to "PhpPgAdmin" on cPanel to check if your tables have appeared in the database. Participants should have lines for every new, incomplete or ongoing session and Task should have a line for every complete session.
+### 2. Create a production Python App
+
+- Log into cPanel (see handbook), use the "Setup Python App" app to create a new python >3.4  environment. (Neil and Bonan found 3.7.3 worked for them, Philipp found he had to use 3.6.8 to include some of his libraries.)
+
+- For the "Application root" field, put the name of the task folder you uploaded. (Neil used `flask` for the demo, so the app is housed in `bramleylab.ppls.ed.ac.uk/flask`).
+
+- For the "Application URL" field, put `experiment/[ROOT_STRING]`, where root_string is the one you set in the `main/view.py` file in your task folder (around line 60).
+	
+- In the `passenger_wsgi.py` file, make sure that the line of code defining the application variable looks like this:
+  ```
+  application = create_app(os.getenv('FLASK_ENV') or 'config.ProductionConfig')
+  ```
+  Note: Bonan found `application = create_app('config.ProductionConfig')` works for her. But Philipp suggests to use the one above.
+
+- Create the app.
+
+### 3. Activate the app
+
+Once you have created the python app, it automatically shows you the commands you need to run next.
+	
+- Open your terminal, secure shell terminal access to server:
+  ```bash
+  ssh wwwbramleylabppl@chost4.is.ed.ac.uk
+  ```
+- And input the SSH password (Ask Neil)
+
+- Then activate the python you just created (you can copy paste from the "Setup Python App" page - in the yellow box on the top of the page after the app is created)
+  ```bash
+  source /home/wwwbramleylabppl/virtualenv/[yourpythonappname]/[yourpythonversion]/bin/activate
+  ```
+- `cd` to the location of your task folder, and manullly install the dependencies from `requirements.txt` there
+   ```bash
+   pip install -r path/to/requirements.txt
+   ```
+- Restart the Python app and check if the task appears.
+
+
+### 4. Check if the task is alive
+
+Go to the desired URL and check if the task is alive. 
+
+For tables, go to "PhpPgAdmin" on cPanel to check if your tables have appeared in the database. Participants should have lines for every new, incomplete or ongoing session and Task should have a line for every complete session.
 
 
 
