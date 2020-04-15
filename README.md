@@ -115,13 +115,13 @@ In general, it should be sufficient to modify the HTML/CSS/JS in `app.templates`
 
 ### 1. Prepare a task folder for production
 
-- In the `main/view.py` file, around line 60, set `root_string` to be a unique name of your experiment (e.g. `myexp` for `bramleylab.ppls.ed.ac.uk/experiments/myexp`. 
+- In the `main/view.py` file, around line 60, set `root_string` to be a unique name of your experiment (e.g. `myexp` for `bramleylab.ppls.ed.ac.uk/experiments/myexp`.
 
-- In the `main/models.py` file, edit the table names for the `Participant` class and `Task` class. (e.g. set ` _table_ = 'nb_flaskdemo_participant'` within the Participant class and `_table_ = 'nb_flaskdemo_task'` around line 58 within the Task class, in `main/models.py` around line 88). 
+- In the `main/models.py` file, edit the table names for the `Participant` class and `Task` class. (e.g. set ` _table_ = 'nb_flaskdemo_participant'` within the Participant class and `_table_ = 'nb_flaskdemo_task'` around line 58 within the Task class, in `main/models.py` around line 88).
 
 - To help us differentiate tables, it's recommended to prefix these tables with your initials and experiment name. These table names need to be unique too.
 
-- Upload it to the home directory of the lab server (see handbook). It's suggested to clear system files, auto-created pycaches, flask_session, local dbs, .git folders etc. before the upload.
+- Upload it to the home directory of the lab server (see handbook). It's suggested to clear system files, auto-created pycaches, flask_session, local dbs, .git folders etc. before the upload. Consider running `git clean -xd -n` and `git clean -xd -f` to remove those files.
 
 ### 2. Create a production Python App
 
@@ -129,20 +129,18 @@ In general, it should be sufficient to modify the HTML/CSS/JS in `app.templates`
 
 - For the "Application root" field, put the name of the task folder you uploaded. (Neil used `flask` for the demo, so the app is housed in `bramleylab.ppls.ed.ac.uk/flask`).
 
-- For the "Application URL" field, put `experiment/[ROOT_STRING]`, where root_string is the one you set in the `main/view.py` file in your task folder (around line 60).
-	
-- In the `passenger_wsgi.py` file, make sure that the line of code defining the application variable looks like this:
-  ```
-  application = create_app(os.getenv('FLASK_ENV') or 'config.ProductionConfig')
-  ```
-  Note: Bonan found `application = create_app('config.ProductionConfig')` works for her. But Philipp suggests to use the one above.
+- For the "Application URL" field, put `experiments/[ROOT_STRING]`, where root_string is the one you set in the `main/view.py` file in your task folder (around line 60).
+
+- Application startup file: `passenger_wsgi.py`.
+
+- Application Entry point: `application`.
 
 - Create the app.
 
 ### 3. Activate the app
 
 Once you have created the python app, it automatically shows you the commands you need to run next.
-	
+
 - Open your terminal, secure shell terminal access to server:
   ```bash
   ssh wwwbramleylabppl@chost4.is.ed.ac.uk
@@ -155,14 +153,20 @@ Once you have created the python app, it automatically shows you the commands yo
   ```
 - `cd` to the location of your task folder, and manullly install the dependencies from `requirements.txt` there
    ```bash
-   pip install -r path/to/requirements.txt
+   pip install -r requirements.txt
    ```
 - Restart the Python app and check if the task appears.
+
+- Before this restart, double check your `passenger_wsgi.py` file and make sure that the line of code defining the application variable looks like this:
+  ```
+  application = create_app(os.getenv('FLASK_ENV') or 'config.ProductionConfig')
+  ```
+  Note: Bonan found `application = create_app('config.ProductionConfig')` works for her. But Philipp suggests to use the one above.
 
 
 ### 4. Check if the task is alive
 
-Go to the desired URL and check if the task is alive. 
+Go to the desired URL and check if the task is alive.
 
 For tables, go to "PhpPgAdmin" on cPanel to check if your tables have appeared in the database. Participants should have lines for every new, incomplete or ongoing session and Task should have a line for every complete session.
 
