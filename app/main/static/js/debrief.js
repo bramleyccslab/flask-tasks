@@ -58,7 +58,9 @@ var save_data = function () {
 
 		console.log(data);
 
-		fetch(root_string, {
+		const submit = document.getElementById("done_debrief");
+		const submit_url = submit.getAttribute("data-submit-url");
+		fetch(submit_url, {
 			method: 'POST',
 			body: JSON.stringify(data),
 		})

@@ -55,25 +55,18 @@ THIS LINE SHOULD BE REMOVED IN PRODUCTION.
 
 '''
 
-# if DEBUG:
-root_string = '/'
-# else if PRODUCTION:
-# root_string = 'flaskdemo'
-# print(root_string)
-
 def generate_completed_token():
     ''' Generates a unique completed token. '''
     token = ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
     return token
 
-
 @tasks.register('STARTED', method='GET')
 def start(participant):
-    return render_template('welcome.html', root_string = root_string)
+    return render_template('welcome.html')
 
 @tasks.register('GET_TASK', method='GET')
 def get_task(participant):
-    return render_template('task.html', root_string = root_string)
+    return render_template('task.html')
 
 @tasks.register('POST_RESULTS', method='POST')
 def tasks_completed(participant):
