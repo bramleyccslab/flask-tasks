@@ -1,6 +1,18 @@
-### First ....
+## Summary
 
-* Log in to eco
+This guide details how to set up Flask apps as a non-root user on eco, with only a small Apache configuration change needed for each app.
+
+* Each user can run a number of separate Flask apps
+* Each Flask app is run inside `gunicorn` which helps it to serve multiple requests faster
+* The `gunicorn` processes (which contain the running Flask apps) are managed by `supervisord`, also run by the user. This will:
+  * Start all apps when the server reboots
+  * Restart apps if they crash
+  * Provide a central place for the user to restart apps if their code has changed.
+* There's an Apache server (running with its normal permissions) running for the whole server. This needs a small configuration change to serve each app to the internet.
+
+## First ....
+
+Log in to eco! All of the steps below should be performed on the server.
 
 ## One-off setup
 
@@ -19,9 +31,9 @@
 
 * Install `supervisor` in your base environment. This will be shared between all your tasks.
   `pip install supervisor`
-* Make a config directory in your home files e.g.
-  `mkdir /home/atullo2/etc/`
-* Edit a supervisord config file in that directory e.g.:
+* Make a config directory and log directory in your home files e.g.
+  `mkdir /home/atullo2/etc/ /home/atullo2/log`
+* Edit a supervisord config file in the config directory e.g.:
   `nano /home/atullo2/etc/supervisord.conf`
   (this is just a suggestion, the file can be anywhere as we'll pass it to `supervisorctl`/`supervisord` explicitly)
 * Add the following general config for `supervisord` and `supervisorctl` to the file:
