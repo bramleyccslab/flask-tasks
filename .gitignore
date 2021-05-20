@@ -21,3 +21,8 @@ Thumbs.db
 ######################
 __pycache__
 flask_session/*
+
+# Config #
+##########
+.gitignore
+
