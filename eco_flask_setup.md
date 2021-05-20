@@ -83,7 +83,26 @@ supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
   `pip install -r requirements.txt`
 * Also install `gunicorn` (production WSGI server)  
   `pip install gunicorn`
-  
+
+### Flask configuration and database
+
+* Create a new Postgres database with
+  `createdb -h localhost -U atullo2_db_user atullo2_flasktasks_db;`
+* Copy `config.py.template` to `config.py` and change the specifics to what you need
+* In particular, the DB configuration should look something like:
+```
+    PONY = {
+        'provider': 'postgres', 
+        'host': '127.0.0.1',
+        'user': 'atullo2_db_user',
+        'password': 'RandomPassword1234',
+        'database': 'atullo2_flasktasks_db'
+    }
+```
+* To log in and take a look at your database on the Postgres SQL prompt, use:  
+ `psql -h localhost -U atullo2_db_user atullo2_flasktasks_db;`  
+  (this will be more interesting after the app has run once and created the tables)
+
 ### Choosing a port number and name/URL for the app
 
 * Pick a port number. In this case I'll use 8000 as an example. The important thing is to use one which isn't in use by any other experiment -- you'll need a way to coordinate this. Port numbers for fixed services run by non-root users can range from 1024 to 32767 in Linux, so maybe give each person their own range of a few hundred ports, to avoid clashes.
@@ -131,25 +150,6 @@ stderr_logfile=/home/atullo2/flask-tasks/log/gunicorn.err.log
 ### When your Flask app code changes
 
 * When you change the app's code you'll need to restart `gunicorn` to see the changes. So e.g. `supervisorctl -c /home/atullo2/etc/supervisord.conf restart flasktasks_gunicorn`
-
-### Flask configuration and database
-
-* Create a new Postgres database with
-  `createdb -h localhost -U atullo2_db_user atullo2_flasktasks_db;`
-* Copy `config.py.template` to `config.py` and change the specifics to what you need
-* In particular, the DB configuration should look something like:
-```
-    PONY = {
-        'provider': 'postgres', 
-        'host': '127.0.0.1',
-        'user': 'atullo2_db_user',
-        'password': 'RandomPassword1234',
-        'database': 'atullo2_flasktasks_db'
-    }
-```
-* To log in and take a look at your database on the Postgres SQL prompt, use:  
- `psql -h localhost -U atullo2_db_user atullo2_flasktasks_db;`  
-  (this will be more interesting after the app has run once and created the tables)
 
 ### Apache configuration
 
