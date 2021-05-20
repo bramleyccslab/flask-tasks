@@ -61,6 +61,14 @@ supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
  `@reboot /home/atullo2/miniconda3/bin/supervisord -c /home/atullo2/etc/supervisord.conf`
 * This will make sure that your `supervisord` restarts when the machine is rebooted.
 
+### Creating your DB user
+
+* Ask an administrator to access the Postgres database and create a user who can create databases. They can do this with:  
+ `sudo -u postgres psql`
+ and then  
+ `create user atullo2_db_user password 'RandomPassword1234' createdb login;`
+* They will need to share the password with you!
+
 ## Per-app setup
 
 ### Flask app environment and code
@@ -123,6 +131,25 @@ stderr_logfile=/home/atullo2/flask-tasks/log/gunicorn.err.log
 ### When your Flask app code changes
 
 * When you change the app's code you'll need to restart `gunicorn` to see the changes. So e.g. `supervisorctl -c /home/atullo2/etc/supervisord.conf restart flasktasks_gunicorn`
+
+### Flask configuration and database
+
+* Create a new Postgres database with
+  `createdb -h localhost -U atullo2_db_user atullo2_flasktasks_db;`
+* Copy `config.py.template` to `config.py` and change the specifics to what you need
+* In particular, the DB configuration should look something like:
+```
+    PONY = {
+        'provider': 'postgres', 
+        'host': '127.0.0.1',
+        'user': 'atullo2_db_user',
+        'password': 'RandomPassword1234',
+        'database': 'atullo2_flasktasks_db'
+    }
+```
+* To log in and take a look at your database on the Postgres SQL prompt, use:  
+ `psql -h localhost -U atullo2_db_user atullo2_flasktasks_db;`  
+  (this will be more interesting after the app has run once and created the tables)
 
 ### Apache configuration
 
