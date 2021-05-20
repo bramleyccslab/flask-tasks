@@ -78,7 +78,7 @@ supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
 * Activate this environment  
   `conda activate flasktasks`
 * Check out the code for your experiment  
-  `git clone https://github.com/bramleyccslab/flask-tasks.git`
+  `git clone https://github.com/atullo2/flask-tasks.git`
 * Install requirements  
   `pip install -r requirements.txt`
 * Also install `gunicorn` (production WSGI server)  
