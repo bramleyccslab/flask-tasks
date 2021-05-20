@@ -2,6 +2,8 @@
 
 * Log in to eco
 
+## One-off setup
+
 ### Miniconda
 
 * Download miniconda with (e.g.) \
@@ -12,8 +14,42 @@
 * Log out of eco and back in, you should see `(base)` added to the prompt on your shell
 * Check location and versions of pip/python if you want  
   `which pip` / `which python` / `pip --version` / `python --version`
+  
+### supervisor
+
 * Install `supervisor` in your base environment. This will be shared between all your tasks.
   `pip install supervisor`
+* Make a config directory in your home files e.g.
+  `mkdir /home/atullo2/etc/`
+* Edit a supervisord config file in that directory e.g.:
+  `nano /home/atullo2/etc/supervisord.conf`
+  (this is just a suggestion, the file can be anywhere as we'll pass it to `supervisorctl`/`supervisord` explicitly)
+* Add the following general config for `supervisord` and `supervisorctl` to the file:
+```
+[supervisord]
+logfile=/home/atullo2/log/supervisor.log
+loglevel=warn
+
+[supervisorctl]
+serverurl=unix:///home/atullo2/etc/supervisor.sock
+
+[unix_http_server]
+file=/home/atullo2/etc/supervisor.sock
+
+[rpcinterface:supervisor]
+supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
+```
+
+### Making sure supervisord runs on reboot
+
+* Edit your user's `crontab`. This is a list of programs to execute at regular intervals, but can also be used to specify something to run when the machine is restarted.
+ `EDITOR=nano crontab -e`
+ (You can specify a different editor if desired -- I use `nano` as I don't like `vi` which is the default).
+* Add a line like:
+ `@reboot /home/atullo2/miniconda3/bin/supervisord -c /home/atullo2/etc/supervisord.conf`
+* This will make sure that your `supervisord` restarts when the machine is rebooted.
+
+## Per-app setup
 
 ### Flask app environment and code
 
@@ -27,6 +63,9 @@
   `pip install -r requirements.txt`
 * Also install `gunicorn` (production WSGI server)  
   `pip install gunicorn`
+  
+### Choosing a port number and name/URL for the app
+
 * Pick a port number. In this case I'll use 8000 as an example. The important thing is to use one which isn't in use by any other experiment -- you'll need a way to coordinate this. Port numbers for fixed services run by non-root users can range from 1024 to 32767 in Linux, so maybe give each person their own range of a few hundred ports, to avoid clashes.
 * Test that `gunicorn` can run the code with:  
   `gunicorn passenger_wsgi:application --bind localhost:8000`  
@@ -41,26 +80,8 @@
 
 * Switch back to your base environment
   `conda activate base`
-* Make a config directory in your home files e.g.
-  `mkdir /home/atullo2/etc/`
-* Edit a supervisord config file in that directory e.g.:
-  `nano /home/atullo2/etc/supervisord.conf`
-  (this is just a suggestion, the file can be anywhere as we'll pass it to `supervisorctl`/`supervisord` explicitly)
-* Add the following to specify management of `gunicorn`:
+* Add a section to your `supervisord.conf`:
 ```
-[supervisord]
-logfile=/home/atullo2/log/supervisor.log
-loglevel=warn
-
-[supervisorctl]
-serverurl=unix:///home/atullo2/etc/supervisor.sock
-
-[unix_http_server]
-file=/home/atullo2/etc/supervisor.sock
-
-[rpcinterface:supervisor]
-supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
-
 [program:flasktasks_gunicorn]
 user=atullo2
 directory=/home/atullo2/flask-tasks/
@@ -71,11 +92,12 @@ autorestart=true
 stdout_logfile=/home/atullo2/flask-tasks/log/gunicorn.log
 stderr_logfile=/home/atullo2/flask-tasks/log/gunicorn.err.log
 ```
-* The last section can be used as a template for other apps, just copy this section and add it to the configuration file. The other sections won't need to change.  
+* This tells `supervisord` how to manage your app
+* Change the paths to relate to this specific app
 * For the line `command=` you can get the exact path for `gunicorn` with
  `which gunicorn`
-* You'll note this makes use of a log directory supervisor and for the app, so create those:
-  `mkdir /home/atullo2/log /home/atullo2/flask-tasks/log`
+* You'll note this makes use of a log directory for the app, so create this:
+  `mkdir /home/atullo2/flask-tasks/log`
 * The line  
   `environment=SCRIPT_NAME=/atullo2_flasktasks`  
   should match the name that you chose for your application above.
@@ -85,11 +107,10 @@ stderr_logfile=/home/atullo2/flask-tasks/log/gunicorn.err.log
 * This can be stopped with:
 `supervisorctl -c /home/atullo2/etc/supervisord.conf stop flasktasks_gunicorn`
 * `supervisorctl` also understands `start` and `restart` in the place of `stop` in this command, to start or restart (stop and then start) the program.
-* Edit your user's `crontab`. This is a list of programs to execute at regular intervals, but can also be used to specify something to run when the machine is restarted.
- `EDITOR=nano crontab -e`
- (You can specify a different editor if desired -- I use `nano` as I don't like `vi` which is the default).
-* Add a line like:
- `@reboot /home/atullo2/miniconda3/bin/supervisord -c /home/atullo2/etc/supervisord.conf`
+  
+### When your Flask app code changes
+
+* When you change the app's code you'll need to restart `gunicorn` to see the changes. So e.g. `supervisorctl -c /home/atullo2/etc/supervisord.conf restart flasktasks_gunicorn`
 
 ### Apache configuration
 
