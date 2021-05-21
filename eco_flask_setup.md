@@ -136,6 +136,10 @@ stdout_logfile=/home/atullo2/flask-tasks/log/gunicorn.log
 stderr_logfile=/home/atullo2/flask-tasks/log/gunicorn.err.log
 ```
 * This tells `supervisord` how to manage your app
+* To pick up this change you'll have to start (or restart) supervisor:  
+  `killall supervisord`  
+  `supervisord -c /home/atullo2/etc/supervisord.conf`
+* `supervisord` automatically runs as a server process (daemon) so will return you to the command line.
 * Change the paths to relate to this specific app
 * For the line `command=` you can get the exact path for `gunicorn` with
  `which gunicorn`
