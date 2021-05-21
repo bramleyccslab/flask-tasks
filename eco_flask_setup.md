@@ -107,8 +107,12 @@ supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
 
 * Pick a port number. In this case I'll use 8000 as an example. The important thing is to use one which isn't in use by any other experiment -- you'll need a way to coordinate this. Port numbers for fixed services run by non-root users can range from 1024 to 32767 in Linux, so maybe give each person their own range of a few hundred ports, to avoid clashes.
 * Test that `gunicorn` can run the code with:  
-  `gunicorn passenger_wsgi:application --bind localhost:8000`  
-  (the specifics of this will depend on names in your code, basically here `passenger_wsgi` is the file that creates the application and `application` is what it's called when that file has run)
+  `gunicorn testing_wsgi:application --bind localhost:8000`  
+  for the test configuration or  
+  `gunicorn wsgi:application --bind localhost:8000`  
+  for the production configuration.
+  The main difference between these two is the way that the database is configured. Try the test configuration first.
+  The specifics of this will depend on names in your code, basically here `passenger_wsgi` is the file that creates the application and `application` is what it's called when that file has run. Here I'm using a file which references the Testing configuration.
 * You can check what this server shows with  
   `curl http://localhost:8000 -o test.html` and then inspect test.html
 * If this doesn't work check `config.py`, in particular `SERVER_NAME` can be a problem. Since we're just serving to localhost it can be removed.
@@ -125,7 +129,7 @@ supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
 user=atullo2
 directory=/home/atullo2/flask-tasks/
 environment=SCRIPT_NAME=/atullo2_flasktasks
-command=/home/atullo2/miniconda3/envs/flasktasks/bin/gunicorn --workers 2 --bind localhost:8000 passenger_wsgi:application
+command=/home/atullo2/miniconda3/envs/flasktasks/bin/gunicorn --workers 2 --bind localhost:8000 wsgi:application
 autostart=true
 autorestart=true
 stdout_logfile=/home/atullo2/flask-tasks/log/gunicorn.log
@@ -135,6 +139,7 @@ stderr_logfile=/home/atullo2/flask-tasks/log/gunicorn.err.log
 * Change the paths to relate to this specific app
 * For the line `command=` you can get the exact path for `gunicorn` with
  `which gunicorn`
+* Note that `gunicorn` is now using `wsgi:application` which references the Production configuration. (See `wsgi.py`).
 * You'll note this makes use of a log directory for the app, so create this:
   `mkdir /home/atullo2/flask-tasks/log`
 * The line  
