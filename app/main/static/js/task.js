@@ -10,11 +10,13 @@ var responses = []; //Participants responses stored here
 var start_time = new Date();
 var start_task_time;
 var end_time;
+const root_el = document.getElementById("root_url_holder");
+const root_url = root_el.getAttribute("data-root-url");
 
 //Load stimuli json data
 /////////////////////////
 // fetch("/experiments/flaskdemo/static/json/stim.json")
-fetch(root_string + "static/json/stim.json")
+fetch(root_url + "static/json/stim.json")
 .then(function(response) {
     return response.json();
   })
