@@ -5,6 +5,8 @@ A base Python/Flask project for serving e.g. psychology tests to
 users from a single URL, keeping track of their status through task stages,
 and writing appropriate results to a database.
 
+For hosting a flask task on the lab server, checkout [this wiki page](https://github.com/bramleyccslab/flask-tasks/wiki/Hosting-on-eco).
+
 ## Requirements
 
 Python 3 (good for any Python3 greater than 3.4)
