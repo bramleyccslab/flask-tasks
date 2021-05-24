@@ -42,10 +42,10 @@ var save_data = function () {
 		"subjectwise": {
 			date:String(end_time.getFullYear()) + '_' +
 				String(end_time.getMonth() + 1).padStart(2, '0') + '_' +
-				String(end_time.getDate() + 1).padStart(2, '0'),
-			time:String(end_time.getHours()+ 1).padStart(2, '0') + '_' +
-				String(end_time.getMinutes() + 1).padStart(2, '0')+ '_' +
-				String(end_time.getSeconds() + 1).padStart(2, '0'),
+				String(end_time.getDate()).padStart(2, '0'),
+			time:String(end_time.getHours()).padStart(2, '0') + '_' +
+				String(end_time.getMinutes()).padStart(2, '0')+ '_' +
+				String(end_time.getSeconds()).padStart(2, '0'),
 			age:$("#ageinput").val(),
 			gender:$("#sex").val(),
 			feedback:$('#feedback').val(),
